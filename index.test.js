@@ -35,6 +35,23 @@ test("basic shallow render 2", () => {
 `);
 });
 
+test("basic shallow render 3", () => {
+  expect(
+    shallowForTarget(
+      <div shallowTarget className="red">
+        Hello
+      </div>
+    )
+  ).toMatchInlineSnapshot(`
+<div
+  className="red"
+  shallowTarget={true}
+>
+  Hello
+</div>
+`);
+});
+
 test("one level down shallow render", () => {
   expect(
     shallowForTarget(
@@ -122,8 +139,32 @@ test("three levels down shallow render component", () => {
 `);
 });
 
+test("complex nest", () => {
+  expect(
+    shallowForTarget(
+      <div className="red">
+        <div className="blue">
+          <Provider>
+            <ListWrapper shallowTarget>Hello</ListWrapper>
+          </Provider>
+        </div>
+      </div>
+    )
+  ).toMatchInlineSnapshot(`
+<ul>
+  <li>
+    One
+  </li>
+</ul>
+`);
+});
+
 const List = () => (
   <ul>
     <li>One</li>
   </ul>
 );
+
+const ListWrapper = ({ children }) => <List shallowTarget>{children}</List>;
+
+const Provider = ({ children }) => children;

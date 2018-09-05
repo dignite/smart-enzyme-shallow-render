@@ -1,7 +1,24 @@
 import { shallow } from "enzyme";
+import React from "react";
 
 export function shallowForTarget(...args) {
   const root = shallow(...args);
-  const match = root.findWhere(elem => elem.props().shallowTarget === true);
-  return match.length ? match.shallow() : root;
+  return shallowTargetOrInput(root);
+}
+
+function shallowTargetOrInput(input) {
+  const { shallowTarget, shallowTargetFound } = containsShallowTarget(input);
+  return shallowTargetFound
+    ? shallowTargetOrInput(shallowTarget.shallow())
+    : input;
+}
+
+function containsShallowTarget(shallowWrapperToSearch) {
+  const match = shallowWrapperToSearch
+    .findWhere(elem => elem.props().shallowTarget === true)
+    .first();
+  return {
+    shallowTarget: match,
+    shallowTargetFound: !!match.length
+  };
 }
