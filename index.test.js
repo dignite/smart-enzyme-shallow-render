@@ -5,7 +5,29 @@ import Adapter from "enzyme-adapter-react-16";
 Enzyme.configure({ adapter: new Adapter() });
 
 test("basic shallow render 1", () => {
-  expect(shallowForTarget(<div className="red">Hello</div>))
+  expect(shallowForTarget("shallowTarget")(<div className="red">Hello</div>))
+    .toMatchInlineSnapshot(`
+<div
+  className="red"
+>
+  Hello
+</div>
+`);
+});
+
+test("basic shallow render 1 (no options)", () => {
+  expect(shallowForTarget()(<div className="red">Hello</div>))
+    .toMatchInlineSnapshot(`
+<div
+  className="red"
+>
+  Hello
+</div>
+`);
+});
+
+test("basic shallow render 1 (default target)", () => {
+  expect(shallowForTarget({})(<div className="red">Hello</div>))
     .toMatchInlineSnapshot(`
 <div
   className="red"
@@ -17,7 +39,7 @@ test("basic shallow render 1", () => {
 
 test("basic shallow render 2", () => {
   expect(
-    shallowForTarget(
+    shallowForTarget("shallowTarget")(
       <div className="red">
         <div className="blue">Hello</div>
       </div>
@@ -37,7 +59,7 @@ test("basic shallow render 2", () => {
 
 test("basic shallow render 3", () => {
   expect(
-    shallowForTarget(
+    shallowForTarget("shallowTarget")(
       <div shallowTarget className="red">
         Hello
       </div>
@@ -54,7 +76,7 @@ test("basic shallow render 3", () => {
 
 test("one level down shallow render", () => {
   expect(
-    shallowForTarget(
+    shallowForTarget("shallowTarget")(
       <div className="red">
         <div className="blue" shallowTarget>
           Hello
@@ -73,7 +95,7 @@ test("one level down shallow render", () => {
 
 test("two levels down shallow render 1", () => {
   expect(
-    shallowForTarget(
+    shallowForTarget("shallowTarget")(
       <div className="red">
         <div className="blue">
           <div className="green" shallowTarget>
@@ -94,7 +116,7 @@ test("two levels down shallow render 1", () => {
 
 test("two levels down shallow render 2", () => {
   expect(
-    shallowForTarget(
+    shallowForTarget("shallowTarget")(
       <div className="red">
         <div className="blue">
           <div className="green" shallowTarget>
@@ -119,7 +141,7 @@ test("two levels down shallow render 2", () => {
 
 test("three levels down shallow render component", () => {
   expect(
-    shallowForTarget(
+    shallowForTarget("shallowTarget")(
       <div className="red">
         <div className="blue">
           <div className="green">
@@ -141,7 +163,7 @@ test("three levels down shallow render component", () => {
 
 test("complex nest", () => {
   expect(
-    shallowForTarget(
+    shallowForTarget("shallowTarget")(
       <div className="red">
         <div className="blue">
           <Provider>
