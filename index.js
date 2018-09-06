@@ -6,14 +6,22 @@ export function shallowForTarget(...args) {
   return shallowTargetOrInput(root);
 }
 
-function shallowTargetOrInput(input) {
-  const { shallowTarget, shallowTargetFound } = containsShallowTarget(input);
-  return shallowTargetFound
-    ? shallowTargetOrInput(shallowTarget.shallow())
-    : input;
+function shallowTargetOrInput(root) {
+  const { shallowTarget, shallowTargetFound } = findShallowTarget(root);
+  return isNonReactComponentTarget(root)
+    ? root
+    : shallowTargetFound
+      ? shallowTargetOrInput(shallowTarget.shallow())
+      : root;
 }
 
-function containsShallowTarget(shallowWrapperToSearch) {
+function isNonReactComponentTarget(input) {
+  return (
+    input.props().shallowTarget === true && typeof input.type() === "string"
+  );
+}
+
+function findShallowTarget(shallowWrapperToSearch) {
   const match = shallowWrapperToSearch
     .findWhere(elem => elem.props().shallowTarget === true)
     .first();
